@@ -58,6 +58,8 @@ After installing PlaceholderAPI, you can use the following placeholders:
 
 - [![](https://img.shields.io/discord/1342805340839870514.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/jN4Br8uhSS) <-点击加入
 
+- [![](https://img.shields.io/badge/GitHub-postyizhan-181717?style=plastic&logo=github&logoColor=white)](https://github.com/postyizhan) <- Home Page
+
 ## 📜 License
 
 This plugin is licensed under the [GNU General Public License v2.0](LICENSE). 
