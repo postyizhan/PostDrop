@@ -6,7 +6,7 @@ messages:
   no-permission: "{prefix}&7You don't have permission to execute this command!"
   invalid-command: "{prefix}&7Invalid command! Use &7/pd help &7to see available commands."
   help:
-    - "&a===== PostDrop Help ====="
+    - "&a===== {prefix} &a====="
     - "&7/pd reload &f- Reload the plugin"
     - "&7/pd version &f- Show version info"
     - "&7/pd help &f- Show help information"
@@ -26,4 +26,4 @@ system:
     update_checking: "{prefix}&7Checking for updates..."
     update_available: "{prefix}&eNew version available! Current version: &c{current_version}&e, Latest version: &a{latest_version}"
     update_url: "{prefix}&eVisit: &bhttps://github.com/postyizhan/PostDrop/releases/latest &eto get the latest version"
-    up_to_date: "{prefix}&aYou are using the latest version!"
+    up_to_date: "{prefix}&7You are using the latest version!"

@@ -6,6 +6,7 @@ import com.github.postyizhan.listeners.ItemDropListener
 import com.github.postyizhan.listeners.ItemPickupListener
 import com.github.postyizhan.listeners.PlayerJoinListener
 import com.github.postyizhan.managers.LanguageManager
+import com.github.postyizhan.managers.PlaceholderManager
 import com.github.postyizhan.managers.ProtectionManager
 import com.github.postyizhan.util.MessageUtil
 import com.github.postyizhan.util.UpdateChecker
@@ -27,6 +28,7 @@ class PostDrop : JavaPlugin() {
     lateinit var languageManager: LanguageManager
     lateinit var protectionManager: ProtectionManager
     lateinit var visibilityHandler: ItemVisibilityHandler
+    lateinit var placeholderManager: PlaceholderManager
     
     // 更新检查器
     private lateinit var updateChecker: UpdateChecker
@@ -57,6 +59,7 @@ class PostDrop : JavaPlugin() {
         languageManager = LanguageManager(this)
         protectionManager = ProtectionManager(this)
         visibilityHandler = ItemVisibilityHandler(this)
+        placeholderManager = PlaceholderManager(this)
         
         // 初始化消息工具
         MessageUtil.init(this)
@@ -66,6 +69,9 @@ class PostDrop : JavaPlugin() {
         
         // 检查并初始化ProtocolLib
         setupProtocolLib()
+        
+        // 注册 PlaceholderAPI 挂钩
+        placeholderManager.register()
         
         // 注册命令
         getCommand("postdrop")?.setExecutor(MainCommand(this))
@@ -142,6 +148,9 @@ class PostDrop : JavaPlugin() {
     }
 
     override fun onDisable() {
+        // 注销 PlaceholderAPI 挂钩
+        placeholderManager.unregister()
+        
         // 调试日志
         if (configManager.isDebugEnabled()) {
             logger.info("PostDrop plugin shutdown")
@@ -162,6 +171,10 @@ class PostDrop : JavaPlugin() {
             
             // 重新初始化消息工具
             MessageUtil.init(this)
+            
+            // 重新注册 PlaceholderAPI 挂钩
+            placeholderManager.unregister()
+            placeholderManager.register()
             
             // 调试日志
             if (configManager.isDebugEnabled()) {

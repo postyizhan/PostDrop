@@ -15,6 +15,7 @@ PostDrop is a simple and useful Minecraft plugin that protects dropped items fro
 - **🔄 Player Control**: Players can toggle item protection on or off
 - **🔔 Automatic Update Checking**: Automatically checks for and notifies about new versions
 - **🌐 Multi-language Support**: Built-in Chinese and English language packs
+- **📊 Placeholder Support**: Supports PlaceholderAPI variables for use in scoreboards, holograms, etc.
 
 ## 💻 Installation
 
@@ -22,6 +23,7 @@ PostDrop is a simple and useful Minecraft plugin that protects dropped items fro
 2. Place the JAR file in your server's `plugins` folder
 3. Restart your server or load the plugin using a plugin manager
 4. Optional: Install [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997) for advanced item visibility control
+5. Optional: Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245) to use placeholders
 
 ## 🔧 Commands
 
@@ -41,6 +43,14 @@ PostDrop is a simple and useful Minecraft plugin that protects dropped items fro
 | `postdrop.reload` | Allows players to reload the plugin | OP |
 | `postdrop.update` | Allows players to check for updates | OP |
 | `postdrop.*` | Includes all permissions | OP |
+
+## 📊 PlaceholderAPI Variables
+
+After installing PlaceholderAPI, you can use the following placeholders:
+
+| Placeholder | Description | Returns |
+|-------------|-------------|---------|
+| `%postdrop_toggle%` | Shows whether the player has enabled item drop protection | "开启" (Enabled) or "关闭" (Disabled) |
 
 ## 📜 License
 

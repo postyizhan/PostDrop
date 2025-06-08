@@ -15,6 +15,7 @@ PostDrop 是一个简单而实用的 Minecraft 物品丢弃保护插件，可以
 - **🔄 玩家自主控制**：玩家可以自行切换是否保护丢弃的物品
 - **🔔 自动更新检查**：自动检查并提示新版本
 - **🌐 多语言支持**：内置中文和英文语言包
+- **📊 变量支持**：支持PlaceholderAPI变量，可用于计分板、全息图等
 
 ## 💻 安装
 
@@ -22,6 +23,7 @@ PostDrop 是一个简单而实用的 Minecraft 物品丢弃保护插件，可以
 2. 将JAR文件放入服务器的`plugins`文件夹
 3. 重启服务器或使用插件管理器加载插件
 4. 可选：安装 [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997) 以启用高级物品可见性控制
+5. 可选：安装 [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245) 以使用变量功能
 
 ## 🔧 命令
 
@@ -41,6 +43,14 @@ PostDrop 是一个简单而实用的 Minecraft 物品丢弃保护插件，可以
 | `postdrop.reload` | 允许玩家重载插件 | OP |
 | `postdrop.update` | 允许玩家检查更新 | OP |
 | `postdrop.*` | 包含所有权限 | OP |
+
+## 📊 PlaceholderAPI 变量
+
+安装 PlaceholderAPI 后，可以使用以下变量：
+
+| 变量 | 描述 | 返回值 |
+|------|------|--------|
+| `%postdrop_toggle%` | 显示玩家是否启用了物品丢弃保护 | "开启" 或 "关闭" |
 
 ## 📜 许可证
 
