@@ -25,6 +25,6 @@ system:
     enabled: "{prefix}&7Plugin enabled"
   updater:
     update_checking: "{prefix}&7Checking for updates..."
-    update_available: "{prefix}&7New version available! Current version: &f{current_version}&7, Latest version: &f{latest_version}"
-    update_url: "{prefix}&7Download link: &fhttps://github.com/postyizhan/PostDrop/releases/latest"
-    up_to_date: "{prefix}&7You are using the latest version!"
+    update_available: "{prefix}&eNew version available! Current version: &c{current_version}&e, Latest version: &a{latest_version}"
+    update_url: "{prefix}&eVisit: &bhttps://github.com/postyizhan/PostDrop/releases/latest &eto get the latest version"
+    up_to_date: "{prefix}&aYou are using the latest version!"

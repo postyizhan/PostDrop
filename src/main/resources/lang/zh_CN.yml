@@ -25,6 +25,6 @@ system:
     enabled: "{prefix}&7插件已启用"
   updater:
     update_checking: "{prefix}&7正在检查更新..."
-    update_available: "{prefix}&7发现新版本！当前版本: &f{current_version}&7，最新版本: &f{latest_version}"
-    update_url: "{prefix}&7下载地址: &fhttps://github.com/postyizhan/PostDrop/releases/latest"
-    up_to_date: "{prefix}&7您正在使用最新版本！"
+    update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"
+    update_url: "{prefix}&e请访问：&bhttps://github.com/postyizhan/PostDrop/releases/latest &e获取最新版本"
+    up_to_date: "{prefix}&a您使用的是最新版本！"
