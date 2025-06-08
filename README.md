@@ -19,7 +19,7 @@ PostDrop 是一个简单而实用的 Minecraft 物品丢弃保护插件，可以
 
 ## 💻 安装
 
-1. 下载最新版本的`PostDrop-xxx.jar`
+1. 下载最新版本的`PostDrop.jar`
 2. 将JAR文件放入服务器的`plugins`文件夹
 3. 重启服务器或使用插件管理器加载插件
 4. 可选：安装 [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997) 以启用高级物品可见性控制

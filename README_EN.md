@@ -19,7 +19,7 @@ PostDrop is a simple and useful Minecraft plugin that protects dropped items fro
 
 ## 💻 Installation
 
-1. Download the latest version of `PostDrop-xxx.jar`
+1. Download the latest version of `PostDrop.jar`
 2. Place the JAR file in your server's `plugins` folder
 3. Restart your server or load the plugin using a plugin manager
 4. Optional: Install [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997) for advanced item visibility control
