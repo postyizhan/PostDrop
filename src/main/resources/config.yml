@@ -1,0 +1,28 @@
+# 语言设置
+language: "zh_CN"
+
+# 保护设置
+protection:
+  # 是否默认启用物品丢弃保护
+  default-enabled: true
+  
+  # 物品描边设置
+  glow:
+    # 是否为受保护的物品添加描边效果
+    enabled: true
+    # 描边颜色 (WHITE, AQUA, BLACK, BLUE, DARK_AQUA, DARK_BLUE, DARK_GRAY, 
+    # DARK_GREEN, DARK_PURPLE, DARK_RED, GOLD, GRAY, GREEN, LIGHT_PURPLE, RED, YELLOW)
+    color: "WHITE"
+  
+  # 可见性设置
+  visibility:
+    # 其他玩家是否能看到受保护的物品（需要安装 ProtocolLib 插件）
+    visible-to-others: false
+    
+# 通知设置
+notifications:
+  # 是否在丢弃受保护物品时通知玩家
+  notify-on-drop: true
+  
+# 调试模式
+debug: false

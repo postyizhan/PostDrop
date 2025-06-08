@@ -1,0 +1,24 @@
+prefix: "&8[&3Post&bDrop&8] "
+messages:
+  disabled: "{prefix}&7Plugin disabled"
+  reload: "{prefix}&7Plugin reloaded successfully!"
+  no-permission: "{prefix}&7You don't have permission to execute this command!"
+  invalid-command: "{prefix}&7Invalid command! Use &7/pd help &7to see available commands."
+  help:
+    - "&a===== PostDrop Help ====="
+    - "&7/pd reload &f- Reload the plugin"
+    - "&7/pd version &f- Show version info"
+    - "&7/pd help &f- Show help information"
+    - "&7/pd toggle &f- Toggle item drop protection"
+  item-drop:
+    protection-enabled: "{prefix}&7Item drop protection is &aenabled&7. Other players cannot pick up your dropped items."
+    protection-disabled: "{prefix}&7Item drop protection is &cdisabled&7. Other players can pick up your dropped items."
+    item-protected: "{prefix}&7This item is protected. Use &f/pd toggle &7to disable item protection."
+    pickup-denied: "{prefix}&7This item is protected. You cannot pick it up."
+
+# System messages
+system:
+  hooks:
+    enabled: "{prefix}&7Successfully loaded support for &f{0}"
+  startup:
+    enabled: "{prefix}&7Plugin enabled"
