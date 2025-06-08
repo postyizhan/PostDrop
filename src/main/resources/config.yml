@@ -1,6 +1,13 @@
 # 语言设置
 language: "zh_CN"
 
+# 更新检查设置
+update-checker:
+  # 是否启用更新检查
+  enabled: true
+  # 检查频率（天）
+  check-interval-days: 1
+
 # 保护设置
 protection:
   # 是否默认启用物品丢弃保护

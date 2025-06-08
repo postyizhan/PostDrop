@@ -13,6 +13,10 @@ class ConfigManager(private val plugin: PostDrop) {
     // 语言设置
     private var language: String = "zh_CN"
     
+    // 更新检查设置
+    private var updateCheckerEnabled: Boolean = true
+    private var updateCheckerInterval: Int = 1
+    
     // 保护设置
     private var defaultProtectionEnabled: Boolean = true
     private var glowEnabled: Boolean = true
@@ -39,6 +43,10 @@ class ConfigManager(private val plugin: PostDrop) {
         // 加载配置
         language = config.getString("language", "zh_CN")!!
         
+        // 加载更新检查设置
+        updateCheckerEnabled = config.getBoolean("update-checker.enabled", true)
+        updateCheckerInterval = config.getInt("update-checker.check-interval-days", 1)
+        
         defaultProtectionEnabled = config.getBoolean("protection.default-enabled", true)
         glowEnabled = config.getBoolean("protection.glow.enabled", true)
         glowColor = config.getString("protection.glow.color", "WHITE")!!
@@ -55,6 +63,10 @@ class ConfigManager(private val plugin: PostDrop) {
     
     // Getter方法
     fun getLanguage(): String = language
+    
+    fun isUpdateCheckerEnabled(): Boolean = updateCheckerEnabled
+    
+    fun getUpdateCheckerInterval(): Int = updateCheckerInterval
     
     fun isDefaultProtectionEnabled(): Boolean = defaultProtectionEnabled
     

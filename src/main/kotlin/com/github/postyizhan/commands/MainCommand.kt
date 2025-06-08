@@ -1,6 +1,7 @@
 package com.github.postyizhan.commands
 
 import com.github.postyizhan.PostDrop
+import com.github.postyizhan.util.MessageUtil
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -41,8 +42,11 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
             "toggle" -> {
                 return handleToggle(sender)
             }
+            "update" -> {
+                return handleUpdate(sender)
+            }
             else -> {
-                sender.sendMessage(plugin.languageManager.getColoredMessage("messages.invalid-command"))
+                MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.invalid-command"))
                 return true
             }
         }
@@ -52,8 +56,8 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
      * 显示帮助信息
      */
     private fun showHelp(sender: CommandSender) {
-        val helpMessages = plugin.languageManager.getMessageList("messages.help")
-        helpMessages.forEach { sender.sendMessage(it) }
+        val helpMessages = MessageUtil.getMessageList("messages.help")
+        MessageUtil.sendMessages(sender, helpMessages)
     }
     
     /**
@@ -62,15 +66,15 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
     private fun handleReload(sender: CommandSender): Boolean {
         // 检查权限
         if (!sender.hasPermission("postdrop.reload")) {
-            sender.sendMessage(plugin.languageManager.getColoredMessage("messages.no-permission"))
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.no-permission"))
             return true
         }
         
         // 重载插件
         if (plugin.reload()) {
-            sender.sendMessage(plugin.languageManager.getColoredMessage("messages.reload"))
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.reload"))
         } else {
-            sender.sendMessage("§cReload failed! Check console for errors.")
+            MessageUtil.sendMessage(sender, "§cReload failed! Check console for errors.")
         }
         
         return true
@@ -80,8 +84,8 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
      * 显示版本信息
      */
     private fun showVersion(sender: CommandSender) {
-        sender.sendMessage("§aPostDrop v${plugin.description.version}")
-        sender.sendMessage("§7By postyizhan")
+        MessageUtil.sendMessage(sender, "§aPostDrop v${plugin.description.version}")
+        MessageUtil.sendMessage(sender, "§7By postyizhan")
     }
     
     /**
@@ -90,13 +94,13 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
     private fun handleToggle(sender: CommandSender): Boolean {
         // 只有玩家可以使用此命令
         if (sender !is Player) {
-            sender.sendMessage("§cThis command can only be used by players!")
+            MessageUtil.sendMessage(sender, "§cThis command can only be used by players!")
             return true
         }
         
         // 检查权限
         if (!sender.hasPermission("postdrop.toggle")) {
-            sender.sendMessage(plugin.languageManager.getColoredMessage("messages.no-permission"))
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.no-permission"))
             return true
         }
         
@@ -116,9 +120,43 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
         
         // 发送消息
         if (newStatus) {
-            sender.sendMessage(plugin.languageManager.getColoredMessage("messages.item-drop.protection-enabled"))
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.item-drop.protection-enabled"))
         } else {
-            sender.sendMessage(plugin.languageManager.getColoredMessage("messages.item-drop.protection-disabled"))
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.item-drop.protection-disabled"))
+        }
+        
+        return true
+    }
+    
+    /**
+     * 处理更新检查命令
+     */
+    private fun handleUpdate(sender: CommandSender): Boolean {
+        // 检查权限
+        if (!sender.hasPermission("postdrop.update")) {
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.no-permission"))
+            return true
+        }
+        
+        // 发送正在检查更新的消息
+        MessageUtil.sendMessage(sender, MessageUtil.getMessage("system.updater.update_checking"))
+        
+        // 执行更新检查
+        if (sender is Player) {
+            plugin.sendUpdateInfo(sender)
+        } else {
+            plugin.getUpdateChecker().checkForUpdates { isUpdateAvailable, newVersion ->
+                if (isUpdateAvailable) {
+                    MessageUtil.sendMessage(sender, MessageUtil.getMessage("system.updater.update_available")
+                        .replace("{current_version}", plugin.description.version)
+                        .replace("{latest_version}", newVersion))
+                    MessageUtil.sendMessage(sender, MessageUtil.getMessage("system.updater.update_url")
+                        .replace("{current_version}", plugin.description.version)
+                        .replace("{latest_version}", newVersion))
+                } else {
+                    MessageUtil.sendMessage(sender, MessageUtil.getMessage("system.updater.up_to_date"))
+                }
+            }
         }
         
         return true
@@ -129,7 +167,7 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
         
         if (args.size == 1) {
             // 第一个参数的补全
-            val subCommands = listOf("help", "reload", "version", "toggle")
+            val subCommands = listOf("help", "reload", "version", "toggle", "update")
             
             // 过滤匹配的命令
             for (subCommand in subCommands) {

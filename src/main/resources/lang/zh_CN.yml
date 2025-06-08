@@ -10,6 +10,7 @@ messages:
     - "&7/pd version &f- 显示版本信息"
     - "&7/pd help &f- 显示帮助信息"
     - "&7/pd toggle &f- 切换物品丢弃保护状态"
+    - "&7/pd update &f- 检查更新"
   item-drop:
     protection-enabled: "{prefix}&7物品丢弃保护已&a启用&7，其他玩家无法拾取您丢弃的物品。"
     protection-disabled: "{prefix}&7物品丢弃保护已&c禁用&7，其他玩家可以拾取您丢弃的物品。"
@@ -22,3 +23,8 @@ system:
     enabled: "{prefix}&7已成功载入对 &f{0} &7插件的支持"
   startup:
     enabled: "{prefix}&7插件已启用"
+  updater:
+    update_checking: "{prefix}&7正在检查更新..."
+    update_available: "{prefix}&7发现新版本！当前版本: &f{current_version}&7，最新版本: &f{latest_version}"
+    update_url: "{prefix}&7下载地址: &fhttps://github.com/postyizhan/PostDrop/releases/latest"
+    up_to_date: "{prefix}&7您正在使用最新版本！"

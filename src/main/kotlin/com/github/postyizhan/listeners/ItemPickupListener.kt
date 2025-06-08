@@ -1,6 +1,7 @@
 package com.github.postyizhan.listeners
 
 import com.github.postyizhan.PostDrop
+import com.github.postyizhan.util.MessageUtil
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -54,7 +55,7 @@ class ItemPickupListener(private val plugin: PostDrop) : Listener {
                 val lastNotified = notifiedPickups.getOrDefault(player.uniqueId, 0L)
                 if (now - lastNotified > NOTIFICATION_COOLDOWN) {
                     // 发送消息
-                    player.sendMessage(plugin.languageManager.getColoredMessage("messages.item-drop.pickup-denied"))
+                    MessageUtil.sendMessage(player, MessageUtil.getMessage("messages.item-drop.pickup-denied"))
                     // 更新通知时间
                     notifiedPickups[player.uniqueId] = now
                 }

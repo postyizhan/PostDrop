@@ -10,7 +10,7 @@ commands:
   postdrop:
     description: Main command for PostDrop plugin
     aliases: [pd]
-    usage: /<command> [help|reload|version|toggle]
+    usage: /<command> [help|reload|version|toggle|update]
     
 permissions:
   postdrop.*:
@@ -19,9 +19,13 @@ permissions:
     children:
       postdrop.reload: true
       postdrop.toggle: true
+      postdrop.update: true
   postdrop.reload:
     description: Allows players to reload the plugin
     default: op
   postdrop.toggle:
     description: Allows players to toggle item protection
     default: true
+  postdrop.update:
+    description: Allows players to check for updates
+    default: op

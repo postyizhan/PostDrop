@@ -4,10 +4,14 @@ import com.github.postyizhan.commands.MainCommand
 import com.github.postyizhan.config.ConfigManager
 import com.github.postyizhan.listeners.ItemDropListener
 import com.github.postyizhan.listeners.ItemPickupListener
+import com.github.postyizhan.listeners.PlayerJoinListener
 import com.github.postyizhan.managers.LanguageManager
 import com.github.postyizhan.managers.ProtectionManager
+import com.github.postyizhan.util.MessageUtil
+import com.github.postyizhan.util.UpdateChecker
 import com.github.postyizhan.visibility.ItemVisibilityHandler
 import com.github.postyizhan.visibility.ProtocolLibHandler
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -23,6 +27,9 @@ class PostDrop : JavaPlugin() {
     lateinit var languageManager: LanguageManager
     lateinit var protectionManager: ProtectionManager
     lateinit var visibilityHandler: ItemVisibilityHandler
+    
+    // 更新检查器
+    private lateinit var updateChecker: UpdateChecker
     
     // ProtocolLib处理器
     private var protocolLibHandler: ProtocolLibHandler? = null
@@ -51,6 +58,12 @@ class PostDrop : JavaPlugin() {
         protectionManager = ProtectionManager(this)
         visibilityHandler = ItemVisibilityHandler(this)
         
+        // 初始化消息工具
+        MessageUtil.init(this)
+        
+        // 初始化更新检查器
+        updateChecker = UpdateChecker(this, "postyizhan/PostDrop")
+        
         // 检查并初始化ProtocolLib
         setupProtocolLib()
         
@@ -60,6 +73,29 @@ class PostDrop : JavaPlugin() {
         // 注册监听器
         server.pluginManager.registerEvents(ItemDropListener(this), this)
         server.pluginManager.registerEvents(ItemPickupListener(this), this)
+        server.pluginManager.registerEvents(PlayerJoinListener(this), this)
+        
+        // 检查更新
+        if (configManager.isUpdateCheckerEnabled()) {
+            updateChecker.checkForUpdates { isUpdateAvailable, newVersion ->
+                if (isUpdateAvailable) {
+                    server.consoleSender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.update_available")
+                            .replace("{current_version}", description.version)
+                            .replace("{latest_version}", newVersion)
+                    ))
+                    server.consoleSender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.update_url")
+                            .replace("{current_version}", description.version)
+                            .replace("{latest_version}", newVersion)
+                    ))
+                } else {
+                    server.consoleSender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.up_to_date")
+                    ))
+                }
+            }
+        }
         
         // 调试日志
         if (configManager.isDebugEnabled()) {
@@ -67,7 +103,7 @@ class PostDrop : JavaPlugin() {
         }
         
         // 发送启动消息
-        logger.info(languageManager.getColoredMessage("system.startup.enabled"))
+        server.consoleSender.sendMessage(MessageUtil.color(MessageUtil.getMessage("system.startup.enabled")))
     }
 
     /**
@@ -112,7 +148,7 @@ class PostDrop : JavaPlugin() {
         }
         
         // 发送关闭消息
-        logger.info(languageManager.getColoredMessage("messages.disabled"))
+        server.consoleSender.sendMessage(MessageUtil.color(MessageUtil.getMessage("messages.disabled")))
     }
     
     // 重载插件方法
@@ -123,6 +159,9 @@ class PostDrop : JavaPlugin() {
             configManager.reload()
             languageManager.reload()
             protectionManager.reload()
+            
+            // 重新初始化消息工具
+            MessageUtil.init(this)
             
             // 调试日志
             if (configManager.isDebugEnabled()) {
@@ -135,5 +174,35 @@ class PostDrop : JavaPlugin() {
             e.printStackTrace()
             return false
         }
+    }
+    
+    /**
+     * 向玩家发送更新检查信息
+     */
+    fun sendUpdateInfo(player: Player) {
+        updateChecker.checkForUpdates { isUpdateAvailable, newVersion ->
+            if (isUpdateAvailable) {
+                val updateAvailableMsg = MessageUtil.getMessage("system.updater.update_available")
+                    .replace("{current_version}", description.version)
+                    .replace("{latest_version}", newVersion)
+                
+                val updateUrlMsg = MessageUtil.getMessage("system.updater.update_url")
+                    .replace("{current_version}", description.version)
+                    .replace("{latest_version}", newVersion)
+                
+                MessageUtil.sendMessage(player, updateAvailableMsg)
+                MessageUtil.sendMessage(player, updateUrlMsg)
+            } else {
+                val upToDateMsg = MessageUtil.getMessage("system.updater.up_to_date")
+                MessageUtil.sendMessage(player, upToDateMsg)
+            }
+        }
+    }
+    
+    /**
+     * 获取更新检查器
+     */
+    fun getUpdateChecker(): UpdateChecker {
+        return updateChecker
     }
 }

@@ -1,10 +1,8 @@
 package com.github.postyizhan.managers
 
 import com.github.postyizhan.PostDrop
-import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
-import java.util.regex.Pattern
 
 /**
  * 语言管理器类，负责处理插件多语言支持
@@ -64,13 +62,6 @@ class LanguageManager(private val plugin: PostDrop) {
     }
     
     /**
-     * 获取带颜色的消息
-     */
-    fun getColoredMessage(path: String, vararg args: String): String {
-        return colorize(getMessage(path, *args))
-    }
-    
-    /**
      * 获取消息列表
      */
     fun getMessageList(path: String): List<String> {
@@ -79,24 +70,13 @@ class LanguageManager(private val plugin: PostDrop) {
             return listOf("Missing message list: $path")
         }
         
-        return list.map { colorize(it.replace("{prefix}", prefix)) }
+        return list.map { it.replace("{prefix}", prefix) }
     }
     
     /**
-     * 转换颜色代码
+     * 获取前缀
      */
-    fun colorize(text: String): String {
-        var coloredText = text
-        val pattern = Pattern.compile("&([0-9a-fk-or])")
-        val matcher = pattern.matcher(coloredText)
-        
-        while (matcher.find()) {
-            val color = ChatColor.getByChar(matcher.group(1)[0])
-            if (color != null) {
-                coloredText = coloredText.replace("&" + matcher.group(1), color.toString())
-            }
-        }
-        
-        return coloredText
+    fun getPrefix(): String {
+        return prefix
     }
 }

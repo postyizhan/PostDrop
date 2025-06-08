@@ -1,6 +1,7 @@
 package com.github.postyizhan.listeners
 
 import com.github.postyizhan.PostDrop
+import com.github.postyizhan.util.MessageUtil
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -29,7 +30,7 @@ class ItemDropListener(private val plugin: PostDrop) : Listener {
             
             // 如果配置了通知，发送消息给玩家
             if (plugin.configManager.isNotifyOnDrop()) {
-                player.sendMessage(plugin.languageManager.getColoredMessage("messages.item-drop.item-protected"))
+                MessageUtil.sendMessage(player, MessageUtil.getMessage("messages.item-drop.item-protected"))
             }
             
             if (plugin.configManager.isDebugEnabled()) {
