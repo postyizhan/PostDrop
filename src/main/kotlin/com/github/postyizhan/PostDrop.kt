@@ -103,7 +103,7 @@ class PostDrop : JavaPlugin() {
         }
         
         // 发送启动消息
-        server.consoleSender.sendMessage(MessageUtil.color(MessageUtil.getMessage("system.startup.enabled")))
+        server.consoleSender.sendMessage(MessageUtil.color(MessageUtil.getMessage("messages.enabled")))
     }
 
     /**

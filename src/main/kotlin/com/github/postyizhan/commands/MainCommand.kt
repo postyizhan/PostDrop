@@ -84,8 +84,13 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
      * 显示版本信息
      */
     private fun showVersion(sender: CommandSender) {
-        MessageUtil.sendMessage(sender, "§aPostDrop v${plugin.description.version}")
-        MessageUtil.sendMessage(sender, "§7By postyizhan")
+        sender.sendMessage(MessageUtil.color("&3Post&bDrop &8| &fv${plugin.description.version}"))
+        sender.sendMessage(MessageUtil.color("&7A simple Minecraft drop protect plugin."))
+        sender.sendMessage(MessageUtil.color("&7"))
+        sender.sendMessage(MessageUtil.color("&f• Author: &7postyizhan"))
+        sender.sendMessage(MessageUtil.color("&f• GitHub: &7https://github.com/postyizhan/PostDrop"))
+        sender.sendMessage(MessageUtil.color("&f• Discord: &7https://discord.com/invite/jN4Br8uhSS"))
+        sender.sendMessage(MessageUtil.color("&f• QQ Group: &7611076407"))
     }
     
     /**

@@ -1,5 +1,6 @@
 prefix: "&8[&3Post&bDrop&8] "
 messages:
+  enabled: "{prefix}&7插件已启用"
   disabled: "{prefix}&7插件已卸载"
   reload: "{prefix}&7插件重载成功！"
   no-permission: "{prefix}&7你没有权限执行此命令！"
@@ -21,8 +22,6 @@ messages:
 system:
   hooks:
     enabled: "{prefix}&7已成功载入对 &f{0} &7插件的支持"
-  startup:
-    enabled: "{prefix}&7插件已启用"
   updater:
     update_checking: "{prefix}&7正在检查更新..."
     update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"

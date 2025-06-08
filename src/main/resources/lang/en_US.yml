@@ -1,5 +1,6 @@
 prefix: "&8[&3Post&bDrop&8] "
 messages:
+  enabled: "{prefix}&7Plugin enabled"
   disabled: "{prefix}&7Plugin disabled"
   reload: "{prefix}&7Plugin reloaded successfully!"
   no-permission: "{prefix}&7You don't have permission to execute this command!"
@@ -21,8 +22,6 @@ messages:
 system:
   hooks:
     enabled: "{prefix}&7Successfully loaded support for &f{0}"
-  startup:
-    enabled: "{prefix}&7Plugin enabled"
   updater:
     update_checking: "{prefix}&7Checking for updates..."
     update_available: "{prefix}&eNew version available! Current version: &c{current_version}&e, Latest version: &a{latest_version}"
