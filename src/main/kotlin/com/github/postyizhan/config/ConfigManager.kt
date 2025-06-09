@@ -26,6 +26,9 @@ class ConfigManager(private val plugin: PostDrop) {
     // 通知设置
     private var notifyOnDrop: Boolean = true
     
+    // MiniMessage设置
+    private var miniMessageEnabled: Boolean = true
+    
     // 调试模式
     private var debug: Boolean = false
     
@@ -54,6 +57,9 @@ class ConfigManager(private val plugin: PostDrop) {
         
         notifyOnDrop = config.getBoolean("notifications.notify-on-drop", true)
         
+        // 加载MiniMessage设置
+        miniMessageEnabled = config.getBoolean("messages.use-minimessage", true)
+        
         debug = config.getBoolean("debug", false)
         
         if (debug) {
@@ -77,6 +83,8 @@ class ConfigManager(private val plugin: PostDrop) {
     fun isVisibleToOthers(): Boolean = visibleToOthers
     
     fun isNotifyOnDrop(): Boolean = notifyOnDrop
+    
+    fun isMiniMessageEnabled(): Boolean = miniMessageEnabled
     
     fun isDebugEnabled(): Boolean = debug
 }

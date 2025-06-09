@@ -15,7 +15,8 @@ messages:
   item-drop:
     protection-enabled: "{prefix}&7物品丢弃保护已&a启用&7，其他玩家无法拾取您丢弃的物品。"
     protection-disabled: "{prefix}&7物品丢弃保护已&c禁用&7，其他玩家可以拾取您丢弃的物品。"
-    item-protected: "{prefix}&7此物品受到保护，使用 &f/pd toggle &7关闭物品保护。"
+    item-protected: "<hover:show_text:'点击此消息开关物品保护'><dark_gray>[<dark_aqua>Post<aqua>Drop<dark_gray>] <gray><click:run_command:/pd toggle>此物品受到保护，使用 <white>/pd toggle <gray>关闭物品保护。</click></hover>"
+    #item-protected: "{prefix}&7此物品受到保护，使用 &f/pd toggle &7关闭物品保护。"
     pickup-denied: "{prefix}&7这个物品受到保护，您无法拾取。"
 
 # 系统消息

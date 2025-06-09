@@ -151,6 +151,9 @@ class PostDrop : JavaPlugin() {
         // 注销 PlaceholderAPI 挂钩
         placeholderManager.unregister()
         
+        // 关闭消息工具
+        MessageUtil.shutdown()
+        
         // 调试日志
         if (configManager.isDebugEnabled()) {
             logger.info("PostDrop plugin shutdown")

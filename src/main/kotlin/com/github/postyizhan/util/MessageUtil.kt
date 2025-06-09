@@ -11,12 +11,30 @@ import org.bukkit.entity.Player
 object MessageUtil {
     private lateinit var plugin: PostDrop
     
+    // 是否启用MiniMessage格式
+    private var useMiniMessage = false
+    
     /**
      * 初始化消息工具
      * @param plugin 插件实例
      */
     fun init(plugin: PostDrop) {
         this.plugin = plugin
+        this.useMiniMessage = plugin.configManager.isMiniMessageEnabled()
+        
+        // 初始化MiniMessage工具类
+        if (useMiniMessage) {
+            MiniMessageUtil.init(plugin)
+        }
+    }
+    
+    /**
+     * 关闭消息工具
+     */
+    fun shutdown() {
+        if (useMiniMessage) {
+            MiniMessageUtil.shutdown()
+        }
     }
     
     /**
@@ -52,7 +70,14 @@ object MessageUtil {
      * @param message 消息内容
      */
     fun sendMessage(receiver: CommandSender, message: String) {
-        receiver.sendMessage(color(message))
+        // 检查消息格式
+        if (useMiniMessage && MiniMessageUtil.containsMiniMessageFormat(message)) {
+            // 使用MiniMessage格式发送
+            MiniMessageUtil.sendMessage(receiver, message)
+        } else {
+            // 使用传统颜色代码发送
+            receiver.sendMessage(color(message))
+        }
     }
     
     /**
@@ -76,5 +101,22 @@ object MessageUtil {
             result = result.replace(key, value)
         }
         return result
+    }
+    
+    /**
+     * 将传统格式消息转换为MiniMessage格式
+     * @param legacyMessage 传统格式消息
+     * @return MiniMessage格式消息
+     */
+    fun legacyToMiniMessage(legacyMessage: String): String {
+        return MiniMessageUtil.legacyToMiniMessage(legacyMessage)
+    }
+    
+    /**
+     * 检查MiniMessage格式是否启用
+     * @return 是否启用MiniMessage格式
+     */
+    fun isMiniMessageEnabled(): Boolean {
+        return useMiniMessage
     }
 }

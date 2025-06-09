@@ -15,7 +15,8 @@ messages:
   item-drop:
     protection-enabled: "{prefix}&7Item drop protection is &aenabled&7. Other players cannot pick up your dropped items."
     protection-disabled: "{prefix}&7Item drop protection is &cdisabled&7. Other players can pick up your dropped items."
-    item-protected: "{prefix}&7This item is protected. Use &f/pd toggle &7to disable item protection."
+    item-protected: "<hover:show_text:'Click on this message to turn on item protection'><dark_gray>[<dark_aqua>Post<aqua>Drop<dark_gray>] <gray><click:run_command:/pd toggle>This item is protected. Use <white>/pd toggle <gray>to disable item protection.</click></hover>"
+    #item-protected: "{prefix}&7This item is protected. Use &f/pd toggle &7to disable item protection."
     pickup-denied: "{prefix}&7This item is protected. You cannot pick it up."
 
 # System messages

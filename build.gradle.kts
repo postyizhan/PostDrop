@@ -27,6 +27,11 @@ dependencies {
     compileOnly("com.comphenix.protocol:ProtocolLib:4.7.0")
     compileOnly("me.clip:placeholderapi:2.11.6")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    
+    // Adventure API 依赖
+    implementation("net.kyori:adventure-api:4.20.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.4") 
+    implementation("net.kyori:adventure-text-minimessage:4.20.0")
 }
 
 val targetJavaVersion = 8

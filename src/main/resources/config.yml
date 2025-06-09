@@ -26,6 +26,13 @@ protection:
     # 其他玩家是否能看到受保护的物品（需要安装 ProtocolLib 插件）
     visible-to-others: false
     
+# 消息设置
+messages:
+  # 是否启用 MiniMessage 格式
+  # MiniMessage 格式允许更丰富的文本样式，例如悬停文本、点击事件等
+  # 详细语法请参考：https://docs.advntr.dev/minimessage/format.html
+  use-minimessage: true
+    
 # 通知设置
 notifications:
   # 是否在丢弃受保护物品时通知玩家
