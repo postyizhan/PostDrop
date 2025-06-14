@@ -13,6 +13,7 @@ import com.github.postyizhan.util.UpdateChecker
 import com.github.postyizhan.visibility.ItemVisibilityHandler
 import com.github.postyizhan.visibility.PacketEventsHandler
 import com.github.postyizhan.visibility.ProtocolLibHandler
+import org.bstats.bukkit.Metrics
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -71,6 +72,16 @@ class PostDrop : JavaPlugin() {
         
         // 初始化更新检查器
         updateChecker = UpdateChecker(this, "postyizhan/PostDrop")
+        
+        // 初始化bStats统计
+        val pluginId = 21274 // PostDrop插件的ID
+        val metrics = Metrics(this, pluginId)
+        
+        // 添加自定义图表
+        metrics.addCustomChart(Metrics.SimplePie("language_used") { configManager.getLanguage() })
+        metrics.addCustomChart(Metrics.SimplePie("protocol_lib_available") { isProtocolLibAvailable().toString() })
+        metrics.addCustomChart(Metrics.SimplePie("update_checker_enabled") { configManager.isUpdateCheckerEnabled().toString() })
+        metrics.addCustomChart(Metrics.SimplePie("debug_mode") { configManager.isDebugEnabled().toString() })
         
         // 检查并初始化ProtocolLib
         setupProtocolLib()

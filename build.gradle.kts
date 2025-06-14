@@ -38,6 +38,9 @@ dependencies {
     implementation("net.kyori:adventure-api:4.20.0")
     implementation("net.kyori:adventure-platform-bukkit:4.3.4") 
     implementation("net.kyori:adventure-text-minimessage:4.20.0")
+
+    // bstats 依赖
+    implementation("org.bstats:bstats-bukkit:3.0.2")
 }
 
 val targetJavaVersion = 8
