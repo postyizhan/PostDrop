@@ -11,6 +11,7 @@ import com.github.postyizhan.managers.ProtectionManager
 import com.github.postyizhan.util.MessageUtil
 import com.github.postyizhan.util.UpdateChecker
 import com.github.postyizhan.visibility.ItemVisibilityHandler
+import com.github.postyizhan.visibility.PacketEventsHandler
 import com.github.postyizhan.visibility.ProtocolLibHandler
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -36,6 +37,10 @@ class PostDrop : JavaPlugin() {
     // ProtocolLib处理器
     private var protocolLibHandler: ProtocolLibHandler? = null
     private var protocolLibAvailable = false
+    
+    // PacketEvents处理器
+    private var packetEventsHandler: PacketEventsHandler? = null
+    private var packetEventsAvailable = false
     
     override fun onEnable() {
         // 设置实例
@@ -69,6 +74,9 @@ class PostDrop : JavaPlugin() {
         
         // 检查并初始化ProtocolLib
         setupProtocolLib()
+        
+        // 检查并初始化PacketEvents
+        setupPacketEvents()
         
         // 注册 PlaceholderAPI 挂钩
         placeholderManager.register()
@@ -113,6 +121,33 @@ class PostDrop : JavaPlugin() {
     }
 
     /**
+     * 检查并设置PacketEvents处理器
+     */
+    private fun setupPacketEvents() {
+        try {
+            // 检查是否存在PacketEvents插件
+            val packetEventsPlugin = server.pluginManager.getPlugin("packetevents")
+            if (packetEventsPlugin != null) {
+                // 初始化PacketEvents处理器
+                packetEventsHandler = PacketEventsHandler(this)
+                packetEventsAvailable = true
+                logger.info("PacketEvents found and hooked successfully!")
+            } else {
+                packetEventsAvailable = false
+                if (configManager.isDebugEnabled()) {
+                    logger.info("PacketEvents plugin not found or not enabled")
+                }
+            }
+        } catch (e: Exception) {
+            packetEventsAvailable = false
+            logger.warning("Error checking PacketEvents: ${e.message}")
+            if (configManager.isDebugEnabled()) {
+                e.printStackTrace()
+            }
+        }
+    }
+    
+    /**
      * 设置ProtocolLib处理器
      */
     private fun setupProtocolLib() {
@@ -128,8 +163,12 @@ class PostDrop : JavaPlugin() {
                 }
             }
         } else {
-            logger.warning("ProtocolLib not found. Item visibility to other players cannot be controlled.")
-            logger.warning("Install ProtocolLib for better item visibility control.")
+            if (server.pluginManager.getPlugin("packetevents") != null) {
+                logger.info("ProtocolLib not found, but PacketEvents is available. Using PacketEvents for item visibility.")
+            } else {
+                logger.warning("ProtocolLib and PacketEvents not found. Item visibility to other players cannot be controlled.")
+                logger.warning("Install ProtocolLib or PacketEvents for better item visibility control.")
+            }
         }
     }
     
@@ -141,10 +180,54 @@ class PostDrop : JavaPlugin() {
     }
     
     /**
+     * 获取PacketEvents处理器
+     */
+    fun getPacketEventsHandler(): PacketEventsHandler? {
+        return packetEventsHandler
+    }
+    
+    /**
      * 检查ProtocolLib是否可用
      */
     fun isProtocolLibAvailable(): Boolean {
         return protocolLibAvailable
+    }
+    
+    /**
+     * 检查PacketEvents是否可用
+     */
+    fun isPacketEventsAvailable(): Boolean {
+        return packetEventsAvailable
+    }
+    
+    /**
+     * 使用最佳可用的可见性处理方式
+     */
+    fun handleItemVisibility(item: org.bukkit.entity.Item, ownerUUID: java.util.UUID) {
+        // 优先使用ProtocolLib
+        if (protocolLibAvailable && protocolLibHandler != null) {
+            protocolLibHandler!!.registerProtectedItem(item, ownerUUID)
+            
+            if (configManager.isDebugEnabled()) {
+                logger.info("Using ProtocolLib to handle item visibility")
+            }
+        } 
+        // 其次使用PacketEvents
+        else if (packetEventsAvailable && packetEventsHandler != null) {
+            packetEventsHandler!!.registerProtectedItem(item, ownerUUID)
+            
+            if (configManager.isDebugEnabled()) {
+                logger.info("Using PacketEvents to handle item visibility")
+            }
+        }
+        // 都不可用时使用默认处理
+        else {
+            visibilityHandler.registerProtectedItem(item, ownerUUID)
+            
+            if (configManager.isDebugEnabled()) {
+                logger.info("Using default visibility handler")
+            }
+        }
     }
 
     override fun onDisable() {

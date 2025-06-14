@@ -23,8 +23,9 @@ protection:
   
   # 可见性设置
   visibility:
-    # 其他玩家是否能看到受保护的物品（需要安装 ProtocolLib 插件）
-    visible-to-others: false
+    # 其他玩家是否能看到受保护的物品（需要安装 ProtocolLib 或 PacketEvents 插件）
+    # 插件会优先使用 ProtocolLib，若未安装则尝试使用 PacketEvents
+    visible-to-others: true
     
 # 消息设置
 messages:

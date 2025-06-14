@@ -20,6 +20,12 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") {
         name = "placeholderapi-repo"
     }
+    maven("https://repo.codemc.io/repository/maven-releases/") {
+        name = "codemc-releases"
+    }
+    maven("https://repo.codemc.io/repository/maven-snapshots/") {
+        name = "codemc-snapshots"
+    }
 }
 
 dependencies {

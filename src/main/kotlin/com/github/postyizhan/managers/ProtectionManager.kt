@@ -124,14 +124,8 @@ class ProtectionManager(private val plugin: PostDrop) {
             applyGlowEffect(item)
         }
         
-        // 使用ProtocolLib处理物品可见性（如果可用）
-        if (plugin.isProtocolLibAvailable()) {
-            plugin.getProtocolLibHandler()?.registerProtectedItem(item, player.uniqueId)
-        }
-        // 如果ProtocolLib不可用，使用默认的可见性处理器
-        else {
-            plugin.visibilityHandler.registerProtectedItem(item, player.uniqueId)
-        }
+        // 处理物品可见性，优先使用ProtocolLib，如有PacketEvents则优先级次之
+        plugin.handleItemVisibility(item, player.uniqueId)
         
         if (plugin.configManager.isDebugEnabled()) {
             plugin.logger.info("Item marked as protected for player ${player.name}")
