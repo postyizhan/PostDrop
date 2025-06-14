@@ -20,6 +20,12 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") {
         name = "placeholderapi-repo"
     }
+    maven("https://repo.codemc.io/repository/maven-releases/") {
+        name = "codemc-releases"
+    }
+    maven("https://repo.codemc.io/repository/maven-snapshots/") {
+        name = "codemc-snapshots"
+    }
 }
 
 dependencies {
@@ -32,6 +38,9 @@ dependencies {
     implementation("net.kyori:adventure-api:4.20.0")
     implementation("net.kyori:adventure-platform-bukkit:4.3.4") 
     implementation("net.kyori:adventure-text-minimessage:4.20.0")
+
+    // bstats 依赖
+    implementation("org.bstats:bstats-bukkit:3.0.2")
 }
 
 val targetJavaVersion = 8
@@ -48,6 +57,11 @@ tasks.withType<JavaCompile> {
 
 tasks.build {
     dependsOn("shadowJar")
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    // 重定位bStats到插件自己的包下，避免冲突
+    relocate("org.bstats", "com.github.postyizhan.libs.bstats")
 }
 
 tasks.processResources {

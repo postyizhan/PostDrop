@@ -11,7 +11,9 @@ import com.github.postyizhan.managers.ProtectionManager
 import com.github.postyizhan.util.MessageUtil
 import com.github.postyizhan.util.UpdateChecker
 import com.github.postyizhan.visibility.ItemVisibilityHandler
+import com.github.postyizhan.visibility.PacketEventsHandler
 import com.github.postyizhan.visibility.ProtocolLibHandler
+import org.bstats.bukkit.Metrics
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -67,8 +69,15 @@ class PostDrop : JavaPlugin() {
         // 初始化更新检查器
         updateChecker = UpdateChecker(this, "postyizhan/PostDrop")
         
+        // 初始化bStats统计
+        val pluginId = 21274
+        Metrics(this, pluginId)
+        
         // 检查并初始化ProtocolLib
         setupProtocolLib()
+        
+        // 检查并初始化PacketEvents
+        setupPacketEvents()
         
         // 注册 PlaceholderAPI 挂钩
         placeholderManager.register()
