@@ -35,7 +35,6 @@ class PacketEventsHandler(private val plugin: PostDrop) {
                 // 尝试初始化PacketEvents
                 PacketEvents.getAPI().settings
                     .checkForUpdates(false)
-                    .bStats(false)
                 
                 PacketEvents.getAPI().init()
                 plugin.logger.info("Successfully initialized PacketEvents API")

@@ -153,7 +153,7 @@ class PostDrop : JavaPlugin() {
         try {
             // 检查是否能访问PacketEvents类
             try {
-                val packetEventsApiClass = PacketEvents::class.java
+                Class.forName("io.github.retrooper.packetevents.PacketEvents")
 
                 packetEventsHandler = PacketEventsHandler(this)
                 packetEventsAvailable = true
