@@ -12,6 +12,7 @@ messages:
     - "&7/pd help &f- 显示帮助信息"
     - "&7/pd toggle &f- 切换物品丢弃保护状态"
     - "&7/pd update &f- 检查更新"
+    - "&7/pd visibility &f- 切换丢弃物品可见性"
   item-drop:
     protection-enabled: "{prefix}&7物品丢弃保护已&a启用&7，其他玩家无法拾取您丢弃的物品。"
     protection-disabled: "{prefix}&7物品丢弃保护已&c禁用&7，其他玩家可以拾取您丢弃的物品。"
@@ -28,3 +29,6 @@ system:
     update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"
     update_url: "{prefix}&e请访问：&bhttps://github.com/postyizhan/PostDrop/releases/latest &e获取最新版本"
     up_to_date: "{prefix}&7您使用的是最新版本！"
+  visibility:
+    enabled: "{prefix}&7物品对其他玩家的可见性已&a启用&7，其他玩家可以看到受保护的物品。"
+    disabled: "{prefix}&7物品对其他玩家的可见性已&c禁用&7，其他玩家看不到受保护的物品。"

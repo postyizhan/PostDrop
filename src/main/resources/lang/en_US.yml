@@ -12,6 +12,7 @@ messages:
     - "&7/pd help &f- Show help information"
     - "&7/pd toggle &f- Toggle item drop protection"
     - "&7/pd update &f- Check for updates"
+    - "&7/pd visibility &f- Toggle item drop visibility"
   item-drop:
     protection-enabled: "{prefix}&7Item drop protection is &aenabled&7. Other players cannot pick up your dropped items."
     protection-disabled: "{prefix}&7Item drop protection is &cdisabled&7. Other players can pick up your dropped items."
@@ -22,9 +23,12 @@ messages:
 # System messages
 system:
   hooks:
-    enabled: "{prefix}&7Successfully loaded support for &f{0}"
+    enabled: "{prefix}&7Successfully hooked into &f{0}"
   updater:
     update_checking: "{prefix}&7Checking for updates..."
     update_available: "{prefix}&eNew version available! Current version: &c{current_version}&e, Latest version: &a{latest_version}"
-    update_url: "{prefix}&eVisit: &bhttps://github.com/postyizhan/PostDrop/releases/latest &eto get the latest version"
+    update_url: "{prefix}&eDownload: &bhttps://github.com/postyizhan/PostDrop/releases/latest"
     up_to_date: "{prefix}&7You are using the latest version!"
+  visibility:
+    enabled: "{prefix}&7Item visibility to others has been &aenabled&7, other players can see protected items."
+    disabled: "{prefix}&7Item visibility to others has been &cdisabled&7, other players cannot see protected items."

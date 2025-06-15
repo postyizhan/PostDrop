@@ -178,7 +178,7 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
     private fun handleVisibility(sender: CommandSender) {
         // 检查权限
         if (!sender.hasPermission("postdrop.admin")) {
-            sender.sendMessage(MessageUtil.getMessage("commands.no-permission"))
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.no-permission"))
             return
         }
         
@@ -199,8 +199,11 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
         plugin.protectionManager.reinitialize()
         
         // 发送消息
-        val status = if (newVisibility) "enabled" else "disabled"
-        sender.sendMessage(MessageUtil.color("&b[PostDrop] &eItem visibility to others is now &a$status"))
+        if (newVisibility) {
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("system.visibility.enabled"))
+        } else {
+            MessageUtil.sendMessage(sender, MessageUtil.getMessage("system.visibility.disabled"))
+        }
         
         // 调试日志
         if (plugin.configManager.isDebugEnabled()) {
