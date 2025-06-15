@@ -4,13 +4,13 @@ main: com.github.postyizhan.PostDrop
 api-version: '1.13'
 description: 'A plugin to protect dropped items from other players'
 authors: [postyizhan]
-softdepend: [ProtocolLib, PlaceholderAPI]
+softdepend: [ProtocolLib, packetevents, PlaceholderAPI]
 
 commands:
   postdrop:
     description: Main command for PostDrop plugin
     aliases: [pd]
-    usage: /<command> [help|reload|version|toggle|update]
+    usage: /<command> [help|reload|version|toggle|update|visibility]
     
 permissions:
   postdrop.*:
@@ -20,6 +20,7 @@ permissions:
       postdrop.reload: true
       postdrop.toggle: true
       postdrop.update: true
+      postdrop.admin: true
   postdrop.reload:
     description: Allows players to reload the plugin
     default: op
@@ -28,4 +29,7 @@ permissions:
     default: true
   postdrop.update:
     description: Allows players to check for updates
+    default: op
+  postdrop.admin:
+    description: Allows players to use admin commands
     default: op

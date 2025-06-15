@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
+import org.bukkit.ChatColor
 
 /**
  * 主命令处理类
@@ -44,6 +45,10 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
             }
             "update" -> {
                 return handleUpdate(sender)
+            }
+            "visibility" -> {
+                handleVisibility(sender)
+                return true
             }
             else -> {
                 MessageUtil.sendMessage(sender, MessageUtil.getMessage("messages.invalid-command"))
@@ -167,12 +172,48 @@ class MainCommand(private val plugin: PostDrop) : CommandExecutor, TabCompleter 
         return true
     }
     
+    /**
+     * 处理visibility子命令
+     */
+    private fun handleVisibility(sender: CommandSender) {
+        // 检查权限
+        if (!sender.hasPermission("postdrop.admin")) {
+            sender.sendMessage(MessageUtil.getMessage("commands.no-permission"))
+            return
+        }
+        
+        // 获取当前设置
+        val currentVisibility = plugin.configManager.isVisibleToOthers()
+        
+        // 切换设置
+        val newVisibility = !currentVisibility
+        
+        // 修改配置文件
+        plugin.config.set("protection.visibility.visible-to-others", newVisibility)
+        plugin.saveConfig()
+        
+        // 重载配置
+        plugin.configManager.reload()
+        
+        // 重新初始化保护管理器
+        plugin.protectionManager.reinitialize()
+        
+        // 发送消息
+        val status = if (newVisibility) "enabled" else "disabled"
+        sender.sendMessage(MessageUtil.color("&b[PostDrop] &eItem visibility to others is now &a$status"))
+        
+        // 调试日志
+        if (plugin.configManager.isDebugEnabled()) {
+            plugin.logger.info("Item visibility changed to: visible-to-others=$newVisibility")
+        }
+    }
+    
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String>? {
         val completions = ArrayList<String>()
         
         if (args.size == 1) {
             // 第一个参数的补全
-            val subCommands = listOf("help", "reload", "version", "toggle", "update")
+            val subCommands = listOf("help", "reload", "version", "toggle", "update", "visibility")
             
             // 过滤匹配的命令
             for (subCommand in subCommands) {

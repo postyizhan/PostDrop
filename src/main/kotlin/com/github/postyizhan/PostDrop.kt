@@ -13,6 +13,7 @@ import com.github.postyizhan.util.UpdateChecker
 import com.github.postyizhan.visibility.ItemVisibilityHandler
 import com.github.postyizhan.visibility.PacketEventsHandler
 import com.github.postyizhan.visibility.ProtocolLibHandler
+import com.github.retrooper.packetevents.PacketEvents
 import org.bstats.bukkit.Metrics
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -38,6 +39,10 @@ class PostDrop : JavaPlugin() {
     // ProtocolLib处理器
     private var protocolLibHandler: ProtocolLibHandler? = null
     private var protocolLibAvailable = false
+    
+    // PacketEvents处理器
+    private var packetEventsHandler: PacketEventsHandler? = null
+    private var packetEventsAvailable = false
     
     override fun onEnable() {
         // 设置实例
@@ -137,8 +142,38 @@ class PostDrop : JavaPlugin() {
                 }
             }
         } else {
-            logger.warning("ProtocolLib not found. Item visibility to other players cannot be controlled.")
-            logger.warning("Install ProtocolLib for better item visibility control.")
+            logger.info("ProtocolLib not found. Falling back to alternative visibility methods.")
+        }
+    }
+    
+    /**
+     * 设置PacketEvents处理器
+     */
+    private fun setupPacketEvents() {
+        try {
+            // 检查是否能访问PacketEvents类
+            try {
+                val packetEventsApiClass = PacketEvents::class.java
+
+                packetEventsHandler = PacketEventsHandler(this)
+                packetEventsAvailable = true
+                
+                logger.info("PacketEvents API found and hooked successfully!")
+                
+                if (configManager.isDebugEnabled()) {
+                    logger.info("PacketEvents version detected")
+                }
+            } catch (e: Exception) {
+                logger.warning("Failed to hook into PacketEvents: ${e.message}")
+                if (configManager.isDebugEnabled()) {
+                    e.printStackTrace()
+                }
+            }
+        } catch (e: Exception) {
+            logger.warning("Error checking for PacketEvents: ${e.message}")
+            if (configManager.isDebugEnabled()) {
+                e.printStackTrace()
+            }
         }
     }
     
@@ -150,10 +185,24 @@ class PostDrop : JavaPlugin() {
     }
     
     /**
+     * 获取PacketEvents处理器
+     */
+    fun getPacketEventsHandler(): PacketEventsHandler? {
+        return packetEventsHandler
+    }
+    
+    /**
      * 检查ProtocolLib是否可用
      */
     fun isProtocolLibAvailable(): Boolean {
         return protocolLibAvailable
+    }
+    
+    /**
+     * 检查PacketEvents是否可用
+     */
+    fun isPacketEventsAvailable(): Boolean {
+        return packetEventsAvailable
     }
 
     override fun onDisable() {
@@ -179,7 +228,9 @@ class PostDrop : JavaPlugin() {
             reloadConfig()
             configManager.reload()
             languageManager.reload()
-            protectionManager.reload()
+            
+            // 使用reinitialize而不是reload，以确保所有组件都使用最新配置
+            protectionManager.reinitialize()
             
             // 重新初始化消息工具
             MessageUtil.init(this)

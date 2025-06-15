@@ -78,6 +78,30 @@ class ProtectionManager(private val plugin: PostDrop) {
     }
     
     /**
+     * 重新初始化保护管理器
+     * 在配置更改后调用，确保所有组件都使用最新配置
+     */
+    fun reinitialize() {
+        // 重载
+        reload()
+        
+        // 重新初始化可见性处理器
+        if (plugin.isPacketEventsAvailable()) {
+            plugin.getPacketEventsHandler()?.reinitialize()
+            
+            // 记录日志
+            if (plugin.configManager.isDebugEnabled()) {
+                val visibleToOthers = if (plugin.configManager.isVisibleToOthers()) "enabled" else "disabled"
+                plugin.logger.info("Reinitializing PacketEvents handler with visible-to-others: $visibleToOthers")
+            }
+        }
+        
+        if (plugin.configManager.isDebugEnabled()) {
+            plugin.logger.info("Protection manager reinitialized with new configuration")
+        }
+    }
+    
+    /**
      * 设置玩家的保护状态
      * @param player 玩家
      * @param enabled 是否启用保护
@@ -112,6 +136,34 @@ class ProtectionManager(private val plugin: PostDrop) {
     }
     
     /**
+     * 选择合适的可见性处理器
+     * 优先级：PacketEvents > ProtocolLib > 默认处理器
+     */
+    private fun handleItemVisibility(item: Item, player: Player) {
+        // 尝试使用PacketEvents
+        if (plugin.isPacketEventsAvailable()) {
+            plugin.getPacketEventsHandler()?.registerProtectedItem(item, player.uniqueId)
+            if (plugin.configManager.isDebugEnabled()) {
+                plugin.logger.info("Using PacketEvents for item visibility")
+            }
+        }
+        // 如果PacketEvents不可用，尝试使用ProtocolLib
+        else if (plugin.isProtocolLibAvailable()) {
+            plugin.getProtocolLibHandler()?.registerProtectedItem(item, player.uniqueId)
+            if (plugin.configManager.isDebugEnabled()) {
+                plugin.logger.info("Using ProtocolLib for item visibility")
+            }
+        }
+        // 如果两者都不可用，使用默认处理器
+        else {
+            plugin.visibilityHandler.registerProtectedItem(item, player.uniqueId)
+            if (plugin.configManager.isDebugEnabled()) {
+                plugin.logger.info("Using default handler for item visibility")
+            }
+        }
+    }
+    
+    /**
      * 标记物品为受保护状态
      */
     fun markItemAsProtected(item: Item, player: Player) {
@@ -124,14 +176,8 @@ class ProtectionManager(private val plugin: PostDrop) {
             applyGlowEffect(item)
         }
         
-        // 使用ProtocolLib处理物品可见性（如果可用）
-        if (plugin.isProtocolLibAvailable()) {
-            plugin.getProtocolLibHandler()?.registerProtectedItem(item, player.uniqueId)
-        }
-        // 如果ProtocolLib不可用，使用默认的可见性处理器
-        else {
-            plugin.visibilityHandler.registerProtectedItem(item, player.uniqueId)
-        }
+        // 处理物品可见性
+        handleItemVisibility(item, player)
         
         if (plugin.configManager.isDebugEnabled()) {
             plugin.logger.info("Item marked as protected for player ${player.name}")

@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * 处理物品可见性的类
+ * 注：当ProtocolLib或PacketEvents可用时，会使用相应的处理器
+ * 此类作为默认的后备机制
  */
 class ItemVisibilityHandler(private val plugin: PostDrop) : Listener {
     
@@ -31,8 +33,15 @@ class ItemVisibilityHandler(private val plugin: PostDrop) : Listener {
     
     /**
      * 注册受保护的物品
+     * 注：当ProtocolLib或PacketEvents可用时，不会执行此类的处理逻辑
      */
     fun registerProtectedItem(item: Item, ownerUUID: UUID) {
+        // 如果ProtocolLib或PacketEvents可用，则不执行此处理
+        if (plugin.isProtocolLibAvailable() || plugin.isPacketEventsAvailable()) {
+            return
+        }
+        
+        // 存储物品信息
         protectedItems[item.uniqueId] = ownerUUID
         
         // 如果配置为不对其他玩家可见，则隐藏物品
@@ -41,7 +50,7 @@ class ItemVisibilityHandler(private val plugin: PostDrop) : Listener {
         }
         
         if (plugin.configManager.isDebugEnabled()) {
-            plugin.logger.info("Registered protected item: ${item.uniqueId}, owner: ${ownerUUID}")
+            plugin.logger.info("Registered protected item in default handler: ${item.uniqueId}, owner: ${ownerUUID}")
         }
     }
     
@@ -58,14 +67,15 @@ class ItemVisibilityHandler(private val plugin: PostDrop) : Listener {
     
     /**
      * 向非所有者隐藏物品
+     * 注：这是一个基本实现，对于没有ProtocolLib或PacketEvents的服务器，效果有限
      */
     private fun hideItemFromNonOwners(item: Item, ownerUUID: UUID) {
         for (player in Bukkit.getOnlinePlayers()) {
             if (player.uniqueId != ownerUUID) {
-                // 在1.13版本，我们需要使用EntityHider或类似的方法
-                // 这里使用简单的方法处理，实际应用中可能需要更复杂的实现
+                // 在1.13版本，如果没有ProtocolLib或PacketEvents，很难有效隐藏物品
+                // 只能做一些基本的处理
                 if (plugin.configManager.isDebugEnabled()) {
-                    plugin.logger.info("Hiding item ${item.uniqueId} from player ${player.name}")
+                    plugin.logger.info("Cannot fully hide item ${item.uniqueId} - ProtocolLib or PacketEvents needed")
                 }
             }
         }
@@ -76,6 +86,11 @@ class ItemVisibilityHandler(private val plugin: PostDrop) : Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerJoin(event: PlayerJoinEvent) {
+        // 如果ProtocolLib或PacketEvents可用，则不执行此处理
+        if (plugin.isProtocolLibAvailable() || plugin.isPacketEventsAvailable()) {
+            return
+        }
+        
         if (!plugin.configManager.isVisibleToOthers()) {
             val player = event.player
             
@@ -87,9 +102,9 @@ class ItemVisibilityHandler(private val plugin: PostDrop) : Listener {
                             // 查找物品
                             for (entity in player.world.entities) {
                                 if (entity is Item && entity.uniqueId == itemUUID) {
-                                    // 隐藏物品
+                                    // 隐藏物品（实际效果有限）
                                     if (plugin.configManager.isDebugEnabled()) {
-                                        plugin.logger.info("Hiding protected item from newly joined player ${player.name}")
+                                        plugin.logger.info("Cannot fully hide item ${itemUUID} - ProtocolLib or PacketEvents needed")
                                     }
                                     break
                                 }
@@ -107,6 +122,11 @@ class ItemVisibilityHandler(private val plugin: PostDrop) : Listener {
     private fun startVisibilityTask() {
         object : BukkitRunnable() {
             override fun run() {
+                // 如果ProtocolLib或PacketEvents可用，则不执行清理
+                if (plugin.isProtocolLibAvailable() || plugin.isPacketEventsAvailable()) {
+                    return
+                }
+                
                 // 清理不存在的物品
                 val toRemove = ArrayList<UUID>()
                 

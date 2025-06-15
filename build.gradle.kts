@@ -26,12 +26,18 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-snapshots/") {
         name = "codemc-snapshots"
     }
+    maven("https://jitpack.io") {
+        name = "jitpack"
+    }
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.7.0")
     compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("com.github.retrooper:packetevents:v2.8.0") {
+        exclude(group = "com.github.retrooper.packetevents", module = "packetevents-fabric")
+    }
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     
     // Adventure API 依赖
